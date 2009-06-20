@@ -4,5 +4,8 @@
   <li>Descripton: <%= h @event.description %></li>
   <li>Start time: <%= h @event.start_time %></li>
   <li>End time: <%= h @event.end_time %></li>
-  <li>Location thingies</li>
+  <li>Address: <%= h @event.address %></li>
+  <li>Lat: <%= @event.lat %>
+  <li>Lng: <%= @event.lng %>
+  <li>Location description: <%= h @event.location_description %></li>
 </ul>
