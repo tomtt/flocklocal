@@ -1,0 +1,14 @@
+<dl id='hcalendar-event-<%= event.to_param %>' class='vevent'>
+  <dt class='dtstart grid_1 alpha'>
+    <p class="cal">
+      <strong><%= event.start_time.to_s(:month_name) %></strong> 
+      <%= event.start_time.day %>
+    </p>
+    <p class='attending'>7 Attending</p>
+  </dt>
+  <dd class='grid_7 omega'>
+    <h3><%= link_to(h(event.title), event, :class => 'url summary') %></h3>
+
+    <p class='description'><%= h event.description %></p>
+  </dd>
+</dl>
