@@ -38,8 +38,6 @@ class AssetTagHelperTest < ActionView::TestCase
     @controller.request = @request
 
     ActionView::Helpers::AssetTagHelper::reset_javascript_include_default
-    AssetTag::Cache.clear
-    AssetCollection::Cache.clear
   end
 
   def teardown
@@ -230,16 +228,18 @@ class AssetTagHelperTest < ActionView::TestCase
     ImageLinkToTag.each { |method, tag| assert_dom_equal(tag, eval(method)) }
   end
 
-  uses_mocha 'test image tag with windows behaviour' do
-    def test_image_tag_windows_behaviour
-      old_asset_id, ENV["RAILS_ASSET_ID"] = ENV["RAILS_ASSET_ID"], "1"
-      # This simulates the behaviour of File#exist? on windows when testing a file ending in "."
-      # If the file "rails.png" exists, windows will return true when asked if "rails.png." exists (notice trailing ".")
-      # OS X, linux etc will return false in this case.
-      File.stubs(:exist?).with('template/../fixtures/public/images/rails.png.').returns(true)
-      assert_equal '<img alt="Rails" src="/images/rails.png?1" />', image_tag('rails.png')
-    ensure
+  def test_image_tag_windows_behaviour
+    old_asset_id, ENV["RAILS_ASSET_ID"] = ENV["RAILS_ASSET_ID"], "1"
+    # This simulates the behaviour of File#exist? on windows when testing a file ending in "."
+    # If the file "rails.png" exists, windows will return true when asked if "rails.png." exists (notice trailing ".")
+    # OS X, linux etc will return false in this case.
+    File.stubs(:exist?).with('template/../fixtures/public/images/rails.png.').returns(true)
+    assert_equal '<img alt="Rails" src="/images/rails.png?1" />', image_tag('rails.png')
+  ensure
+    if old_asset_id
       ENV["RAILS_ASSET_ID"] = old_asset_id
+    else
+      ENV.delete("RAILS_ASSET_ID")
     end
   end
 
@@ -248,6 +248,14 @@ class AssetTagHelperTest < ActionView::TestCase
     assert_equal %(<img alt="Rails" src="/images/rails.png?#{expected_time}" />), image_tag("rails.png")
   end
 
+  def test_timebased_asset_id_with_relative_url_root
+      ActionController::Base.relative_url_root = "/collaboration/hieraki"
+      expected_time = File.stat(File.expand_path(File.dirname(__FILE__) + "/../fixtures/public/images/rails.png")).mtime.to_i.to_s
+      assert_equal %(<img alt="Rails" src="#{ActionController::Base.relative_url_root}/images/rails.png?#{expected_time}" />), image_tag("rails.png")
+    ensure
+      ActionController::Base.relative_url_root = ""
+  end
+    
   def test_should_skip_asset_id_on_complete_url
     assert_equal %(<img alt="Rails" src="http://www.example.com/rails.png" />), image_tag("http://www.example.com/rails.png")
   end
@@ -269,6 +277,26 @@ class AssetTagHelperTest < ActionView::TestCase
     assert_equal copy, source
   end
 
+  def test_caching_image_path_with_caching_and_proc_asset_host_using_request
+    ENV['RAILS_ASSET_ID'] = ''
+    ActionController::Base.asset_host = Proc.new do |source, request|
+      if request.ssl?
+        "#{request.protocol}#{request.host_with_port}"
+      else
+        "#{request.protocol}assets#{source.length}.example.com"
+      end
+    end
+    
+    ActionController::Base.perform_caching = true
+
+
+    @controller.request.stubs(:ssl?).returns(false)
+    assert_equal "http://assets15.example.com/images/xml.png", image_path("xml.png")
+
+    @controller.request.stubs(:ssl?).returns(true)
+    assert_equal "http://localhost/images/xml.png", image_path("xml.png")
+  end
+
   def test_caching_javascript_include_tag_when_caching_on
     ENV["RAILS_ASSET_ID"] = ""
     ActionController::Base.asset_host = 'http://a0.example.com'
@@ -288,9 +316,17 @@ class AssetTagHelperTest < ActionView::TestCase
 
     assert File.exist?(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'money.js'))
 
+    assert_dom_equal(
+      %(<script src="http://a0.example.com/absolute/test.js" type="text/javascript"></script>),
+      javascript_include_tag(:all, :cache => "/absolute/test")
+    )
+
+    assert File.exist?(File.join(ActionView::Helpers::AssetTagHelper::ASSETS_DIR, 'absolute', 'test.js'))
+
   ensure
     FileUtils.rm_f(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'all.js'))
     FileUtils.rm_f(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'money.js'))
+    FileUtils.rm_f(File.join(ActionView::Helpers::AssetTagHelper::ASSETS_DIR, 'absolute'))
   end
 
   def test_caching_javascript_include_tag_when_caching_on_with_proc_asset_host
@@ -319,6 +355,46 @@ class AssetTagHelperTest < ActionView::TestCase
         "#{request.protocol}assets#{source.length}.example.com"
       end
     }
+    ActionController::Base.perform_caching = true
+
+    assert_equal '/javascripts/vanilla.js'.length, 23
+    assert_dom_equal(
+      %(<script src="http://assets23.example.com/javascripts/vanilla.js" type="text/javascript"></script>),
+      javascript_include_tag(:all, :cache => 'vanilla')
+    )
+
+    assert File.exist?(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'vanilla.js'))
+
+    class << @controller.request
+      def protocol() 'https://' end
+      def ssl?() true end
+    end
+
+    assert_equal '/javascripts/secure.js'.length, 22
+    assert_dom_equal(
+      %(<script src="https://localhost/javascripts/secure.js" type="text/javascript"></script>),
+      javascript_include_tag(:all, :cache => 'secure')
+    )
+
+    assert File.exist?(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'secure.js'))
+
+  ensure
+    FileUtils.rm_f(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'vanilla.js'))
+    FileUtils.rm_f(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'secure.js'))
+  end
+
+  def test_caching_javascript_include_tag_when_caching_on_with_2_argument_object_asset_host
+    ENV['RAILS_ASSET_ID'] = ''
+    ActionController::Base.asset_host = Class.new do
+      def call(source, request)
+        if request.ssl?
+          "#{request.protocol}#{request.host_with_port}"
+        else
+          "#{request.protocol}assets#{source.length}.example.com"
+        end
+      end
+    end.new
+
     ActionController::Base.perform_caching = true
 
     assert_equal '/javascripts/vanilla.js'.length, 23
@@ -478,9 +554,47 @@ class AssetTagHelperTest < ActionView::TestCase
     )
 
     assert File.exist?(File.join(ActionView::Helpers::AssetTagHelper::STYLESHEETS_DIR, 'money.css'))
+
+    assert_dom_equal(
+      %(<link href="http://a0.example.com/absolute/test.css" media="screen" rel="stylesheet" type="text/css" />),
+      stylesheet_link_tag(:all, :cache => "/absolute/test")
+    )
+
+    assert File.exist?(File.join(ActionView::Helpers::AssetTagHelper::ASSETS_DIR, 'absolute', 'test.css'))
   ensure
     FileUtils.rm_f(File.join(ActionView::Helpers::AssetTagHelper::STYLESHEETS_DIR, 'all.css'))
     FileUtils.rm_f(File.join(ActionView::Helpers::AssetTagHelper::STYLESHEETS_DIR, 'money.css'))
+    FileUtils.rm_f(File.join(ActionView::Helpers::AssetTagHelper::ASSETS_DIR, 'absolute'))
+  end
+
+  def test_concat_stylesheet_link_tag_when_caching_off
+    ENV["RAILS_ASSET_ID"] = ""
+
+    assert_dom_equal(
+      %(<link href="/stylesheets/all.css" media="screen" rel="stylesheet" type="text/css" />),
+      stylesheet_link_tag(:all, :concat => true)
+    )
+
+    expected = Dir["#{ActionView::Helpers::AssetTagHelper::STYLESHEETS_DIR}/*.css"].map { |p| File.mtime(p) }.max
+    assert_equal expected, File.mtime(File.join(ActionView::Helpers::AssetTagHelper::STYLESHEETS_DIR, 'all.css'))
+
+    assert_dom_equal(
+      %(<link href="/stylesheets/money.css" media="screen" rel="stylesheet" type="text/css" />),
+      stylesheet_link_tag(:all, :concat => "money")
+    )
+
+    assert File.exist?(File.join(ActionView::Helpers::AssetTagHelper::STYLESHEETS_DIR, 'money.css'))
+
+    assert_dom_equal(
+      %(<link href="/absolute/test.css" media="screen" rel="stylesheet" type="text/css" />),
+      stylesheet_link_tag(:all, :concat => "/absolute/test")
+    )
+
+    assert File.exist?(File.join(ActionView::Helpers::AssetTagHelper::ASSETS_DIR, 'absolute', 'test.css'))
+  ensure
+    FileUtils.rm_f(File.join(ActionView::Helpers::AssetTagHelper::STYLESHEETS_DIR, 'all.css'))
+    FileUtils.rm_f(File.join(ActionView::Helpers::AssetTagHelper::STYLESHEETS_DIR, 'money.css'))
+    FileUtils.rm_f(File.join(ActionView::Helpers::AssetTagHelper::ASSETS_DIR, 'absolute'))
   end
 
   def test_caching_stylesheet_link_tag_when_caching_on_with_proc_asset_host
@@ -635,5 +749,11 @@ class AssetTagHelperNonVhostTest < ActionView::TestCase
     assert_equal 'gopher://a.example.com/files/go/here/collaboration/hieraki/images/xml.png', image_path('xml.png')
   ensure
     ActionController::Base.asset_host = nil
+  end
+
+  def test_assert_css_and_js_of_the_same_name_return_correct_extension
+    assert_dom_equal(%(/collaboration/hieraki/javascripts/foo.js), javascript_path("foo"))
+    assert_dom_equal(%(/collaboration/hieraki/stylesheets/foo.css), stylesheet_path("foo"))
+
   end
 end

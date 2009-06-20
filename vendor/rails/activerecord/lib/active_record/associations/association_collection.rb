@@ -60,7 +60,7 @@ module ActiveRecord
           @reflection.klass.find(*args)
         end
       end
-      
+
       # Fetches the first one using SQL if possible.
       def first(*args)
         if fetch_first_or_last_using_find?(args)
@@ -83,7 +83,11 @@ module ActiveRecord
 
       def to_ary
         load_target
-        @target.to_ary
+        if @target.is_a?(Array)
+          @target.to_ary
+        else
+          Array(@target)
+        end
       end
 
       def reset
@@ -139,6 +143,8 @@ module ActiveRecord
       end
 
       # Remove all records from this association
+      #
+      # See delete for more info.
       def delete_all
         load_target
         delete(@target)
@@ -182,23 +188,31 @@ module ActiveRecord
         end
       end
 
-
-      # Remove +records+ from this association.  Does not destroy +records+.
+      # Removes +records+ from this association calling +before_remove+ and
+      # +after_remove+ callbacks.
+      #
+      # This method is abstract in the sense that +delete_records+ has to be
+      # provided by descendants. Note this method does not imply the records
+      # are actually removed from the database, that depends precisely on
+      # +delete_records+. They are in any case removed from the collection.
       def delete(*records)
-        records = flatten_deeper(records)
-        records.each { |record| raise_on_type_mismatch(record) }
-        
-        transaction do
-          records.each { |record| callback(:before_remove, record) }
-          
-          old_records = records.reject {|r| r.new_record? }
+        remove_records(records) do |records, old_records|
           delete_records(old_records) if old_records.any?
-          
-          records.each do |record|
-            @target.delete(record)
-            callback(:after_remove, record)
-          end
+          records.each { |record| @target.delete(record) }
         end
+      end
+
+      # Destroy +records+ and remove them from this association calling
+      # +before_remove+ and +after_remove+ callbacks.
+      #
+      # Note that this method will _always_ remove records from the database
+      # ignoring the +:dependent+ option.
+      def destroy(*records)
+        remove_records(records) do |records, old_records|
+          old_records.each { |record| record.destroy }
+        end
+
+        load_target
       end
 
       # Removes all records from this association.  Returns +self+ so method calls may be chained.
@@ -213,15 +227,16 @@ module ActiveRecord
 
         self
       end
-      
-      def destroy_all
-        transaction do
-          each { |record| record.destroy }
-        end
 
+      # Destory all the records from this association.
+      #
+      # See destroy for more info.
+      def destroy_all
+        load_target
+        destroy(@target)
         reset_target!
       end
-      
+
       def create(attrs = {})
         if attrs.is_a?(Array)
           attrs.collect { |attr| create(attr) }
@@ -320,6 +335,10 @@ module ActiveRecord
         exists?(record)
       end
 
+      def proxy_respond_to?(method, include_private = false)
+        super || @reflection.klass.respond_to?(method, include_private)
+      end
+
       protected
         def construct_find_options!(options)
         end
@@ -415,6 +434,18 @@ module ActiveRecord
           @target << record unless @reflection.options[:uniq] && @target.include?(record)
           callback(:after_add, record)
           record
+        end
+
+        def remove_records(*records)
+          records = flatten_deeper(records)
+          records.each { |record| raise_on_type_mismatch(record) }
+
+          transaction do
+            records.each { |record| callback(:before_remove, record) }
+            old_records = records.reject { |r| r.new_record? }
+            yield(records, old_records)
+            records.each { |record| callback(:after_remove, record) }
+          end
         end
 
         def callback(method, record)

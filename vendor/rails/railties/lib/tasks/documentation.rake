@@ -52,6 +52,12 @@ namespace :doc do
     rm_rf 'doc/plugins' rescue nil
   end
 
+  desc "Generate Rails guides"
+  task :guides do
+    require File.join(RAILTIES_PATH, "guides/rails_guides")
+    RailsGuides::Generator.new(File.join(RAILS_ROOT, "doc/guides")).generate
+  end
+
   namespace :plugins do
     # Define doc tasks for each plugin
     plugins.each do |plugin|
