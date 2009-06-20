@@ -1,6 +1,6 @@
 <h1>Event: <%= h @event.title %></h1>
 <% if @event.owner == current_user %>
-  <%= link_to('Edit this event', edit_event_path(@event)) %>
+  <%#= link_to('Edit this event', edit_event_path(@event)) %>
 <% else %>
   <%= render(:partial => 'sign_up', :locals => { :event => @event }) %>
 <% end %>
