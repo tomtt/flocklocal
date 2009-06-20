@@ -2,6 +2,7 @@ config/database.yml
 *~
 *.cache
 *.log
+*.swp
 .DS_Store
 db/cstore/**
 doc/api
@@ -9,3 +10,4 @@ doc/app
 doc/plugins
 coverage/*
 public/stylesheets/*.css
+db/*sqlite*
