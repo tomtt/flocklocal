@@ -41,6 +41,10 @@ class User < ActiveRecord::Base
     u && u.authenticated?(password) ? u : nil
   end
 
+  def name_for_view
+    name.empty? ? login : name
+  end
+
   def login=(value)
     write_attribute :login, (value ? value.downcase : nil)
   end
