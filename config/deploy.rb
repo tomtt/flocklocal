@@ -1,4 +1,4 @@
-set :application, "local_coupons"
+set :application, "flocklocal"
 set :repository,  "."
 
 # If you aren't deploying to /u/apps/#{application} on the target
@@ -10,11 +10,11 @@ set :repository,  "."
 # your SCM below:
 # set :scm, :subversion
 
-set :user, "local_coupons"
-set :deploy_to, "/home/#{user}/#{application}"
+set :user, "localflock"
+set :deploy_to, "/websites/www/#{application}"
 set :use_sudo, false
 
-set :repository, "tomtt_git:local_coupons.git"
+# set :repository, "/git"
 ssh_options[:forward_agent] = true
 set :scm, :git
 set :scm_verbose, true # due to git 1.4 being used on server
@@ -23,7 +23,7 @@ set :deploy_via, :remote_cache
 
 set :copy_remote_dir, "/home/#{user}"
 
-set :host, "jamagam.com"
+set :host, "flocklocal.net"
 role :app, host
 role :web, host
 role :db,  host, :primary => true
