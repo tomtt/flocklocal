@@ -16,3 +16,8 @@
   <li>Location description: <%= h @event.location_description %></li>
   <li>Event organiser: <%= link_to(h(@event.owner.name_for_view), @event.owner) %></li>
 </ul>
+
+<h2>People attending this flock (<%= @event.users.size %>):</h2>
+<div class='attendees'>
+  <%= render(:partial => '/users/avatar_link_user', :collection => @event.users) %>
+</div>
