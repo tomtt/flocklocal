@@ -8,4 +8,5 @@
   <li>Lat: <%= @event.lat %>
   <li>Lng: <%= @event.lng %>
   <li>Location description: <%= h @event.location_description %></li>
+  <li>Event organiser: <%= link_to(h(@event.owner.login), @event.owner) %></li>
 </ul>

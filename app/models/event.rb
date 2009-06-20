@@ -4,6 +4,7 @@ class Event < ActiveRecord::Base
   belongs_to :owner, :class_name => "User"
 
   validates_presence_of :lat, :lng
+  validates_associated :owner
 
   acts_as_mappable
   before_validation_on_create :geocode_address
