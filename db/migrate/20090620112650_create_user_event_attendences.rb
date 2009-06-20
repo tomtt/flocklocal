@@ -1,6 +1,6 @@
-class CreateUserEventAttendences < ActiveRecord::Migration
+class CreateUserEventAttendances < ActiveRecord::Migration
   def self.up
-    create_table :user_event_attendences do |t|
+    create_table :user_event_attendances do |t|
       t.references :event
       t.references :user
       t.string :status
@@ -10,6 +10,6 @@ class CreateUserEventAttendences < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :user_event_attendences
+    drop_table :user_event_attendances
   end
 end
