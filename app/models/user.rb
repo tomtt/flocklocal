@@ -57,6 +57,10 @@ class User < ActiveRecord::Base
     login
   end
 
+  def attend_event(event, status = UserEventAttendance::SURE_STATUS)
+    UserEventAttendance.create(:user => self, :event => event, :status => status)
+  end
+
   protected
 
 end

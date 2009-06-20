@@ -23,6 +23,14 @@ class Event < ActiveRecord::Base
     { :limit => limit }
   }
 
+  def sure_attendees
+    user_event_attendances.sure.map(&:user)
+  end
+
+  def maybe_attendees
+    user_event_attendances.maybe.map(&:user)
+  end
+
   def geocode_address
     unless lat && lng
       geo = GeoKit::Geocoders::MultiGeocoder.geocode(address)

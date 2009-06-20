@@ -3,6 +3,12 @@ class EventsController < ApplicationController
   before_filter :login_required, :except => [:index, :show]
   after_filter :sign_up_for_own_event, :only => [:create]
 
+  def show
+    self.resource = find_resource
+    @sure_attendees = resource.sure_attendees
+    @maybe_attendees = resource.maybe_attendees
+  end
+
   def create
     self.resource = new_resource
     self.resource.owner = current_user
@@ -12,6 +18,6 @@ class EventsController < ApplicationController
   protected
 
   def sign_up_for_own_event
-    self.resource.users << current_user
+    current_user.attend_event(self.resource)
   end
 end
