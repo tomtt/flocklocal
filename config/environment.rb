@@ -37,8 +37,8 @@ Rails::Initializer.run do |config|
   # Make sure the secret is at least 30 characters and all random, 
   # no regular words or you'll be exposed to dictionary attacks.
   config.action_controller.session = {
-    :session_key => '_local_coupons_session',
-    :secret      => '1f2cfa62a3c6ba24a82acca55f873267037b4b832a0bdf5b580d857d86035b59887d83469797e1f93738a2ec778db6d46f88bc1c7d098e2b87797dd38fb32bf8'
+    :session_key => '_flocklocal_session',
+    :secret      => '1f2cfa62a3c6ba24a82acca55f873267037b4b832a0bdf5b580d857d86035b59887d83469797e1f93738a2ec778db6d46f88bc1c7d09abcdef797dd38fb32bf8'
   }
 
   # Use the database for sessions instead of the cookie-based default,
