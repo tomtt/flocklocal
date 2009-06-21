@@ -1,5 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
   map.root  :controller => 'pages', :action => 'home'
+  map.about '/about', :controller => 'pages', :action => 'about'
+  map.first_flock '/first_flock', :controller => 'pages', :action => 'first_flock'
+  map.success_stories'/success_stories', :controller => 'pages', :action => 'success_stories'
+  map.faq'/faq', :controller => 'pages', :action => 'faq'
 
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   map.login '/login', :controller => 'sessions', :action => 'new'
