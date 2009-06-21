@@ -14,7 +14,7 @@
   <li>Lat: <%= @event.lat %>
   <li>Lng: <%= @event.lng %>
   <li>Location description: <%= h @event.location_description %></li>
-  <li>Event organiser: <%= link_to(h(@event.owner.name_for_view), @event.owner) %></li>
+  <li>Event organiser: <%= link_to(h(@event.owner.name_for_view), @event.owner) %><%= link_to(user_avatar(@event.owner), @event.owner) %></li>
 </ul>
 
 <%= static_google_map(@event.lat, @event.lng) %>
