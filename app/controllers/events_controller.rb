@@ -7,6 +7,9 @@ class EventsController < ApplicationController
     self.resource = find_resource
     @sure_attendees = resource.sure_attendees
     @maybe_attendees = resource.maybe_attendees
+    @current_user_attendance =
+      UserEventAttendance.
+      find_or_initialize_by_user_id_and_event_id(current_user, resource)
   end
 
   def create
