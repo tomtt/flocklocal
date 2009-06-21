@@ -59,4 +59,18 @@ module ApplicationHelper
 
     rsvp + update_form
   end
+
+  def static_google_map(lat, lng)
+    width = '200'
+    height = '200'
+    maptype = 'mobile'
+    zoom = '14'
+    marker_color = 'greena'
+    sensor = 'false'
+    url =
+      "http://maps.google.com/staticmap?center=#{lat},#{lng}&amp;" +
+      "zoom=#{zoom}&amp;size=#{width}x#{height}&amp;maptype=#{maptype}&amp;" +
+      "markers=#{lat},#{lng},#{marker_color}&amp;key=#{GeoKit::Geocoders::google}&amp;sensor=#{sensor}"
+    image_tag(url) + '<div class="clear"></div>'
+  end
 end

@@ -17,6 +17,8 @@
   <li>Event organiser: <%= link_to(h(@event.owner.name_for_view), @event.owner) %></li>
 </ul>
 
+<%= static_google_map(@event.lat, @event.lng) %>
+
 <%= current_user_attendance %>
 
 <h2>People attending this flock (<%= @sure_attendees.size %>):</h2>
