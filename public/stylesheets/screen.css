@@ -15,6 +15,7 @@ body{background:transparent url(/images/sun.png) no-repeat; font-family:"Lucida 
 #user-bar-greeting a, #user-bar-action a{color:#fff; text-decoration:none;}
 #user-bar-greeting a:hover, #user-bar-action a:hover{text-decoration:underline;}
 
+.attendees div{float:left; margin-left:5px; margin-bottom:5px;}
 
 .nav{position:absolute; bottom:0px; left:45%; margin:1em; padding:0;}
 /* .nav li{background:url(/images/divider.gif) no-repeat right;} */
