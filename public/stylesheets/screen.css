@@ -8,7 +8,7 @@ body{background:transparent url(/images/sun.png) no-repeat; font-family:"Lucida 
 #locationTip input{border:none; background:url(/images/locationTip.gif) repeat-x bottom; border-bottom:1px solid #ccc;}
 #additionalInfo{background:transparent;}
 #metaFooter{background:#aaa;}
-
+#additionalInfo p {text-align:center;}
 
 #header h1 a{text-decoration:none; position:relative; left:1em;}
 #user-bar-greeting, #user-bar-action{text-align:right; margin-right:2.5em; color:#af4fa2; font-style:italic;}
