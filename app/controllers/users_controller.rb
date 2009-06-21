@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   resources_controller_for :users
+  before_filter :user_needs_to_be_herself, :except => [:index, :show]
 
   # Be sure to include AuthenticationSystem in Application Controller instead
   include AuthenticatedSystem
@@ -27,5 +28,11 @@ class UsersController < ApplicationController
       flash[:error]  = "We couldn't set up that account, sorry.  Please try again, or contact an admin (link is above)."
       render :action => 'new'
     end
+  end
+
+  protected
+
+  def user_needs_to_be_herself
+    (authorized? && find_resource == current_user) || access_denied
   end
 end

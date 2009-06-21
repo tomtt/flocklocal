@@ -1,2 +1,5 @@
 <h1><%= h @user.name_for_view %></h1>
+<% if @user == current_user %>
+  <%= link_to('Edit your profile', edit_user_path(current_user)) %><br/>
+<% end %>
 <%= image_tag @user.avatar.url(:thumb) %>
