@@ -25,7 +25,9 @@
 <div class='attendees sure-attending'>
   <%= render(:partial => '/users/avatar_link_user', :collection => @sure_attendees) %>
 </div>
+<div class='clear'></div>
 <h2>People who may attend this flock (<%= @maybe_attendees.size %>):</h2>
 <div class='attendees maybe-attending'>
   <%= render(:partial => '/users/avatar_link_user', :collection => @maybe_attendees) %>
 </div>
+<div class='clear'></div>

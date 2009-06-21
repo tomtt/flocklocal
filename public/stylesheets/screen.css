@@ -122,3 +122,6 @@ h4 a{color:#8b8b8b; text-decoration:none;}
 .featured{display:none;}
 #volunteers{display:none;}
 
+.user-avatar-link {
+  float: left;
+}
