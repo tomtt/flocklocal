@@ -1,0 +1,94 @@
+html { background:#FFF url(/images/background.jpg) repeat-x; }
+body{background: transparent; font-family:"Lucida Sans Unicode", "Lucida Grande", Tahoma, sans-serif; font-size:1em;}
+#header{background:#7fcde0; position:relative;}
+#welcome{background:#af4fa2; font-style:italic;}
+#welcome a{color:#333; text-decoration:none;}
+#mainWrapper{background:#FFF url(/images/content-background.png) repeat-y;}
+#locationTip input{border:none; background:none; border-bottom:1px solid #ccc;}
+#additionalInfo{background:transparent;}
+#metaFooter{background:#aaa;}
+
+
+#header h1 a{text-decoration:none;}
+
+.nav{position:absolute; bottom:0px; left:45%; margin:1em; padding:0;}
+.nav li{background:url(/images/divider.gif) no-repeat right;}
+.nav li.last{background:none;}
+.nav li a{color:#fff; text-decoration:none; margin-right:0.7em; margin-left:0.2em; text-transform:uppercase;}
+
+#listing dt{margin-bottom:2em;}
+#listing dl dt{float:left; text-align:center;}
+#listing dl dt p{padding:0px; margin:0px; }
+#listing dl dd{position:relative; top:-6px;}
+#listing h3{margin-bottom:0.3em;}
+.cal{background:#ccc; line-height:2.5em;}
+.cal strong{display:block; background:#999; line-height:1.5em;}
+.attending{font-size:0.8em;}
+.quickdates{clear:left; margin-left:100px;}
+
+#createBtn, #volunteerBtn{display:block; width:200px; margin:1em auto; background:#ccc; text-align:center; text-decoration:none;}
+
+
+ul.fields{list-style-type:none; margin:0; padding:0;}
+ul.fields li{clear:left; margin:0; padding:0; margin-bottom:5px;}
+ul.fields li label{clear:left; float:left; display:block; width:100px; margin-bottom:5px; line-height:1.5em;}
+ul.fields li input, li textarea{float:left; width:150px; border:1px solid #999; padding:3px;}
+ul.fields li textarea{height:100px;}
+ul.fields li small.error{clear:left; margin-left:130px; color:#f00; font-size:0.7em; display:block; padding-bottom:5px;}
+
+ul.inline-list li{display:inline; margin:0px;}
+a span{visibility:hidden;}
+
+.featured{margin:1em; border:1px solid #999; background:#ccc; padding:1em;}
+
+/* Header */
+#header {
+	margin-top: 50px;
+	padding: 40px 0;
+	
+	-moz-border-radius-topleft: 6px;
+	-webkit-border-top-left-radius: 6px;
+	-moz-border-radius-topright: 6px;
+	-webkit-border-top-right-radius: 6px;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+}
+#header h1 a {
+	display: block !important;
+	background: transparent url(/images/logo.png) no-repeat;
+	height: 90px;
+	margin-left: 2	0px;
+	text-indent: -9999px;
+	text-align: left; /* Fixes odd image replacement bug */
+	width: 385px;
+}
+
+/* Welcome */
+#welcome {
+	background: #DFE79D;
+	border-bottom: 2px solid #C3D53A;
+	line-height: 1.2em;
+	padding-top: 12px;
+}
+#welcome h2 a {
+	color: #A74E9A;
+	font-size: 0.7em;
+}
+
+/* Main */
+#main {
+	padding: 20px 0;
+}
+
+/* Footer */
+#metaFooter {
+	background: #DFE79D;
+	border-top: 2px solid #C3D53A;
+	padding: 20px 0;
+}
+#metaFooter dt {
+	float: left;
+}
+#metaFooter dd {
+	margin-left: 110px;
+}
