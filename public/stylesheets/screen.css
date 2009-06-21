@@ -1,5 +1,5 @@
 html {background:url(/images/websitebackground.png) repeat-x;}
-body{background:transparent url(/images/sun.png) no-repeat; font-family:"Lucida Sans Unicode", "Lucida Grande", Tahoma, sans-serif; font-size:0.88em; color:#8b8b8b;}
+body{background:transparent url(/images/sun.png) no-repeat; font-family:"Lucida Sans Unicode", "Lucida Grande", Tahoma, sans-serif; font-size:100%; font-size:0.88em; color:#8b8b8b;}
 #container{position:relative; top:50px;}
 #header{background:#7fcde0; position:relative;}
 #welcome{background:#af4fa2; font-style:italic;}
@@ -15,11 +15,12 @@ body{background:transparent url(/images/sun.png) no-repeat; font-family:"Lucida 
 #user-bar-greeting a, #user-bar-action a{color:#fff; text-decoration:none;}
 #user-bar-greeting a:hover, #user-bar-action a:hover{text-decoration:underline;}
 
+.attendees div{float:left; margin-left:5px; margin-bottom:5px;}
 
 .nav{position:absolute; bottom:0px; left:45%; margin:1em; padding:0;}
 /* .nav li{background:url(/images/divider.gif) no-repeat right;} */
 .nav li.last{background:none;}
-.nav li a{color:#fff; text-decoration:none; margin-right:0.7em; margin-left:0.2em; text-transform:uppercase;}
+.nav li a{color:#fff; text-decoration:none; margin-right:0.7em; margin-left:0.2em; text-transform:uppercase; font-size:1.2em;}
 .nav li a:hover{text-decoration:underline;}
 
 #listing{position:relative; left:1em;}
@@ -29,14 +30,14 @@ body{background:transparent url(/images/sun.png) no-repeat; font-family:"Lucida 
 #listing dl dd{position:relative; top:-6px;}
 #listing h3{margin-bottom:0.3em; font-style:italic;}
 #listing h3 a{color:#333; text-decoration:none; font-weight:bold;}
-.cal{background:url(/images/cal.png) no-repeat; line-height:3.5em; color:#fff; margin-bottom:-0.5em;}
+.cal{background:url(/images/cal2.png) no-repeat; line-height:3.5em; color:#fff; margin-bottom:-0.5em;}
 .cal strong{display:block; line-height:1.4em; color:#fff;}
 .attending{font-size:0.7em; position:relative; top:-4px;}
 .quickdates{clear:left; margin-left:100px;}
 
 #createBtn, #volunteerBtn{display:block; width:200px; margin:1em auto; background:#ccc; text-align:center; text-decoration:none;}
 #createBtn{background:url(/images/createBtn.png) no-repeat; height:77px;}
-
+#volunteerBtn{background:url(/images/joinbutton.png) no-repeat; height:77px;}
 
 ul.fields{list-style-type:none; margin:0; padding:0;}
 ul.fields li{clear:left; margin:0; padding:0; margin-bottom:5px;}
@@ -49,11 +50,11 @@ ul.inline-list li{display:inline; margin:0px;}
 a span{visibility:hidden;}
 
 .featured{margin:1em; background:#fff; font-size:0.8em; padding-bottom:1em;}
-.featured h4{background:#af4fa2; color:#fff; padding:3px; margin:0em; text-align:right; padding-right:1em;}
-.featured h5{color:#7fcde0; margin:0em 1em;}
-.featured h6{margin:0em 1em;}
-.featured p{margin-left:1em; margin-right:1em;}
-.featured img{border:1px solid #ccc; padding:2px; background:#fff; margin:0.5em;}
+.featured h4{background:#af4fa2; color:#fff; padding:3px; margin:0em; text-align:right; padding-right:1em; font-size:1.4em;}
+.featured h5{color:#7fcde0; margin:0em 15px;}
+.featured h6{margin:0em 15px;}
+.featured p{margin-left:15px; margin-right:15px;}
+.featured img{border:1px solid #ccc; padding:2px; background:#fff; margin:1em; margin-bottom:0em;}
 
 /* Header */
 #header {
@@ -112,3 +113,8 @@ h4 a{color:#8b8b8b; text-decoration:none;}
 #metaFooter ul{list-style-type:none; margin:0; padding:0;}
 #metaFooter ul li{background:url(/images/bullet.gif) no-repeat 0px 5px; padding-left:1.8em;}
 #metaFooter ul li a{text-decoration:none; color:#8b8b8b; font-size:1.2em; text-transform:uppercase;}
+
+#metaFooter dl dt{float:right;}
+
+#footer{margin-top:0.5em; padding-bottom:1em; font-size:0.8em;}
+#footer a{color:#8b8b8b;}
