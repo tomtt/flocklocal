@@ -4,6 +4,13 @@ class UsersController < ApplicationController
   # Be sure to include AuthenticationSystem in Application Controller instead
   include AuthenticatedSystem
 
+  def update
+    self.resource = find_resource
+    # [:login, :email].each { |p| params[resource_name][p] = resource[p] }
+    # debugger
+    @resource_saved = resource.update_attributes(params[resource_name])
+  end
+
   def create
     logout_keeping_session!
     @user = User.new(params[:user])
