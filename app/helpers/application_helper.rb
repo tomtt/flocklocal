@@ -39,7 +39,7 @@ module ApplicationHelper
     end
     rsvp += " attending</b>\n"
 
-    update_options = ''
+    update_options = '<option>---</option>'
     unless status == UserEventAttendance::SURE_STATUS
       update_options += '<option value="%s">%s</option>' % [UserEventAttendance::SURE_STATUS, UserEventAttendance::SURE_STATUS]
     end
