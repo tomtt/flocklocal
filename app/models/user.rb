@@ -18,9 +18,9 @@ class User < ActiveRecord::Base
   validates_uniqueness_of   :email
   validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
 
-  has_many :user_event_attendances
+  has_many :user_event_attendances, :dependent => :destroy
   has_many :event_attendances, :through => :user_event_attendances, :source => :event
-  has_many :events, :foreign_key => :owner_id
+  has_many :events, :foreign_key => :owner_id, :dependent => :nullify
 
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
