@@ -11,3 +11,4 @@ doc/plugins
 coverage/*
 public/stylesheets/*.css
 db/*sqlite*
+public/assets/*
