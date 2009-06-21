@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   resources_controller_for :users
-  before_filter :user_needs_to_be_herself, :except => [:index, :show]
+  before_filter :user_needs_to_be_herself, :except => [:index, :show, :create, :new]
 
   # Be sure to include AuthenticationSystem in Application Controller instead
   include AuthenticatedSystem
