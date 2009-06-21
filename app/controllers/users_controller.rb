@@ -33,6 +33,10 @@ class UsersController < ApplicationController
   protected
 
   def user_needs_to_be_herself
-    (authorized? && find_resource == current_user) || access_denied
+    if authorized? && find_resource == current_user
+      return true
+    else
+      redirect_to user_path(find_resource)
+    end
   end
 end
