@@ -43,6 +43,15 @@ document.observe("dom:loaded", function() {
 			}});
 		}
 	}
+	
+	// FAQ toggles
+	$$('a[href=#FAQ]').each(function(faq) {
+		$(faq.rel).hide();
+		faq.observe('click', function(e) {
+			Event.stop(e);
+			new Effect.toggle(this.rel, 'blind');
+		}.bindAsEventListener(faq));
+	});
 });
 
 
@@ -74,3 +83,4 @@ var Cookie = {
 		Cookie.set(name,'',-1);
 	}
 }
+
