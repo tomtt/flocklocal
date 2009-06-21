@@ -31,9 +31,10 @@ ActionController::Routing::Routes.draw do |map|
 
   # Sample resource route with sub-resources:
   #   map.resources :products, :has_many => [ :comments, :sales ], :has_one => :seller
-  
+
   map.resources :events
-  
+  map.resources :user_event_attendances, :only => [:create, :update]
+
   # Sample resource route within a namespace:
   map.namespace :admin do |admin|
     # Directs /admin/products/* to Admin::ProductsController (app/controllers/admin/products_controller.rb)
