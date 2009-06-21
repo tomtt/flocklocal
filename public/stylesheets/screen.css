@@ -118,3 +118,7 @@ h4 a{color:#8b8b8b; text-decoration:none;}
 
 #footer{margin-top:0.5em; padding-bottom:1em; font-size:0.8em;}
 #footer a{color:#8b8b8b;}
+
+.featured{display:none;}
+#volunteers{display:none;}
+
