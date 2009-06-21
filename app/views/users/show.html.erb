@@ -2,4 +2,4 @@
 <% if @user == current_user %>
   <%= link_to('Edit your profile', edit_user_path(current_user)) %><br/>
 <% end %>
-<%= image_tag @user.avatar.url(:thumb) %>
+<%= user_avatar(@user) %>

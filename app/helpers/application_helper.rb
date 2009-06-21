@@ -22,4 +22,8 @@ module ApplicationHelper
     end
   end
 
+  def user_avatar(user)
+    image_tag(user.avatar.url(:thumb),
+              :alt_tag => user.name_for_view)
+  end
 end

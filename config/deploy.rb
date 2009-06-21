@@ -48,6 +48,7 @@ namespace :config do
   task :copy_shared_configurations, :roles => [:app] do
     %w[database.yml].each do |f|
       run "ln -nsf #{shared_path}/config/#{f} #{release_path}/config/#{f}"
+      run "ln -s #{shared_path}/assets #{release_path}/public/assets"
     end
   end
 end
