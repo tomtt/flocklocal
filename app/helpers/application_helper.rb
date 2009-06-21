@@ -41,7 +41,7 @@ module ApplicationHelper
 
     update_options = ''
     unless status == UserEventAttendance::SURE_STATUS
-      update_options += '<option value="%s">%s</option>' % [UserEventAttendance::SURE_STATUS, UserEventAttendance::SURE]
+      update_options += '<option value="%s">%s</option>' % [UserEventAttendance::SURE_STATUS, UserEventAttendance::SURE_STATUS]
     end
     unless status == UserEventAttendance::MAYBE_STATUS
       update_options += '<option value="%s">%s</option>' % [UserEventAttendance::MAYBE_STATUS, UserEventAttendance::MAYBE_STATUS]
