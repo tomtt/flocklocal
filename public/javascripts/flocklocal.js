@@ -52,6 +52,8 @@ document.observe("dom:loaded", function() {
 			new Effect.toggle(this.rel, 'blind');
 		}.bindAsEventListener(faq));
 	});
+	
+	if(window.location.toString().indexOf('event') === -1) $('volunteer').hide();
 });
 
 
