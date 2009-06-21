@@ -1,3 +1,9 @@
+
+<h1>Welcome to flocklocal</h1>
+
+
+<% @events.each do |event| %>
+ 
 <dl id='hcalendar-event-<%= event.to_param %>' class='event'>
   <dt class='dtstart grid_1 alpha'>
     <p class="cal">
@@ -11,3 +17,5 @@
     <p class='description'><%= h event.excerpt %></p>
   </dd>
 </dl>
+<div class="clear"></div>
+<% end %>

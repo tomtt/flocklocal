@@ -24,9 +24,9 @@
       <div id='main' class='grid_8'>
         <%= yield %>
       </div>
-
-    <div class='clear'></div>
+      <%= render :partial => '/layouts/sidebar', :locals =>{:events => @events} %>
   </div>
+  
   <%= render :partial => '/layouts/footer' %>
 
 </div> <!-- END: #container -->
