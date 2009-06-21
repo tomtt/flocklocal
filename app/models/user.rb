@@ -36,9 +36,12 @@ class User < ActiveRecord::Base
                   :avatar_file_size
 
   has_attached_file :avatar,
-  :styles => {
-    :thumb=> "50x50#",
-    :small  => "150x150>" }
+    :url => "/assets/#{AVATAR_ATTACHMENT_BASE}/:id/:basename_:style.:extension",
+    :path => "#{RAILS_ROOT}/public/assets/#{AVATAR_ATTACHMENT_BASE}/:id/:basename_:style.:extension",
+    :styles => {
+      :thumb=> "50x50#",
+      :small  => "150x150>" }
+  validates_attachment_content_type :avatar, :content_type => IMAGE_MIME_TYPES
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   #
